@@ -1,0 +1,20 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t edoparearyee/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true edoparearyee/react-test npm test
+
+after_success:
+  - docker build -t edoparearyee/multi-client ./client
+  - docker build -t edoparearyee/multi-nginx ./nginx
+  - docker build -t edoparearyee/multi-server ./server
+  - docker build -t edoparearyee/multi-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push edoparearyee/multi-client
+  - docker push edoparearyee/multi-nginx
+  - docker push edoparearyee/multi-server
+  - docker push edoparearyee/multi-worker
