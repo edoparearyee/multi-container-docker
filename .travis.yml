@@ -1,6 +1,7 @@
 sudo: required
 services:
   - docker
+language: generic
 
 before_install:
   - docker build -t edoparearyee/react-test -f ./client/Dockerfile.dev ./client
@@ -18,3 +19,15 @@ after_success:
   - docker push edoparearyee/multi-nginx
   - docker push edoparearyee/multi-server
   - docker push edoparearyee/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: "eu-west-2"
+  app: "multi-docker"
+  env: "Multidocker-env"
+  bucket_name: "elasticbeanstalk-eu-west-2-457385982195"
+  bucket_path: "docker-multi"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
