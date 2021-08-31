@@ -1,5 +1,5 @@
 {
-  "AWSEBDockerrunVersion": "3",
+  "AWSEBDockerrunVersion": 2,
   "containerDefinitions": [
     {
       "name": "client",
@@ -26,9 +26,8 @@
       "name": "nginx",
       "image": "edoparearyee/multi-nginx",
       "hostname": "nginx",
-      "esstential": true,
-      "memory": 128,
-      "portMapping": [
+      "essential": true,
+      "portMappings": [
         {
           "hostPort": 80,
           "containerPort": 80
@@ -37,7 +36,8 @@
       "links": [
         "client",
         "server"
-      ]
+      ],
+      "memory": 128
     }
   ]
 }

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React, { Component } from 'react';
+import axios from 'axios';
 
 class Fib extends Component {
   state = {
     seenIndexes: [],
     values: {},
-    index: "",
+    index: '',
   };
 
   componentDidMount() {
@@ -14,36 +14,28 @@ class Fib extends Component {
   }
 
   async fetchValues() {
-    try {
-      const values = await axios.get("/api/values/current");
-      this.setState({
-        values: typeof values.data === "object" ? values.data : {},
-      });
-    } catch (e) {}
+    const values = await axios.get('/api/values/current');
+    this.setState({ values: values.data });
   }
 
   async fetchIndexes() {
-    try {
-      const seenIndexes = await axios.get("/api/values/all");
-      this.setState({
-        seenIndexes: Array.isArray(seenIndexes.data) ? seenIndexes.data : [],
-      });
-    } catch (e) {}
+    const seenIndexes = await axios.get('/api/values/all');
+    this.setState({
+      seenIndexes: seenIndexes.data,
+    });
   }
 
   handleSubmit = async (event) => {
     event.preventDefault();
 
-    try {
-      await axios.post("/api/values", {
-        index: this.state.index,
-      });
-    } catch (e) {}
-    this.setState({ index: "" });
+    await axios.post('/api/values', {
+      index: this.state.index,
+    });
+    this.setState({ index: '' });
   };
 
   renderSeenIndexes() {
-    return this.state.seenIndexes.map(({ number }) => number).join(", ");
+    return this.state.seenIndexes.map(({ number }) => number).join(', ');
   }
 
   renderValues() {
@@ -53,7 +45,7 @@ class Fib extends Component {
       entries.push(
         <div key={key}>
           For index {key} I calculated {this.state.values[key]}
-        </div>,
+        </div>
       );
     }
 
